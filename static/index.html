@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EdgeTTS API - Tao Wang</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#2563eb',
+              secondary: '#1e40af',
+              neon: '#00f6ff',
+            },
+            animation: {
+              'gradient': 'gradient 8s linear infinite',
+            },
+            keyframes: {
+              gradient: {
+                '0%, 100%': {
+                  'background-size': '200% 200%',
+                  'background-position': 'left center'
+                },
+                '50%': {
+                  'background-size': '200% 200%',
+                  'background-position': 'right center'
+                },
+              },
+            },
+          }
+        }
+      }
+    </script>
+  </head>
+  <body class="bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-gray-100 font-sans min-h-screen flex flex-col">
+    <header class="py-16 animate-gradient backdrop-blur-lg">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-5xl font-bold mb-4 text-center bg-clip-text text-transparent bg-gradient-to-r from-white to-neon leading-relaxed">
+          EdgeTTS API
+        </h1>
+        <div class="text-xl md:text-2xl text-center space-y-2">
+          <div class="text-blue-200">A Modern Text-to-Speech API Solution</div>
+          <div class="text-blue-200">Compatible with OpenAI API</div>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-grow flex flex-col backdrop-blur-sm">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 flex-grow flex flex-col justify-between">
+        <div class="space-y-8">
+          <div class="bg-gradient-to-br from-slate-800/50 to-slate-900/50 p-8 rounded-3xl shadow-2xl hover:-translate-y-1 transition-all duration-300 border border-slate-700/30 backdrop-blur-xl hover:border-neon/30">
+            <h2 class="text-3xl font-bold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-neon">
+              Project
+            </h2>
+            <p class="mb-4 text-slate-300">
+              EdgeTTS API is a powerful and efficient text-to-speech solution that leverages Microsoft's text-to-speech
+              technology. Built with modern web standards and best practices, it provides a seamless integration
+              experience for developers.
+            </p>
+            <p class="text-slate-300">
+              Check out the
+              <a
+                href="https://github.com/taowang1993/edgetts-api/blob/main/voices.yaml"
+                target="_blank"
+                class="text-neon hover:text-blue-400 transition-colors duration-200"
+                >EdgeTTS Voice Gallery</a
+              >
+              to explore all supported voices and languages.
+            </p>
+          </div>
+
+          <div class="bg-gradient-to-br from-slate-800/50 to-slate-900/50 p-8 rounded-3xl shadow-2xl hover:-translate-y-1 transition-all duration-300 border border-slate-700/30 backdrop-blur-xl hover:border-neon/30">
+            <h2 class="text-3xl font-bold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-neon">
+              Author
+            </h2>
+            <h4 class="text-lg font-medium mb-4 text-center text-slate-300">Tao Wang</h4>
+            <div class="text-center space-y-2">
+              <a
+                href="https://github.com/taowang1993"
+                target="_blank"
+                class="block text-neon hover:text-blue-400 transition-colors duration-200"
+              >https://github.com/taowang1993</a>
+              <a
+                href="https://riverhill.ai"
+                target="_blank"
+                class="block text-neon hover:text-blue-400 transition-colors duration-200"
+              >https://riverhill.ai</a>
+              <a
+                href="mailto:twang293@gmail.com"
+                class="block text-neon hover:text-blue-400 transition-colors duration-200"
+              >twang293@gmail.com</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="py-16 text-center">
+          <p class="text-2xl italic bg-gradient-to-r from-blue-400 to-neon bg-clip-text text-transparent font-semibold">
+            "Use AI to Reform Education"
+          </p>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

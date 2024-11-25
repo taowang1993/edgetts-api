@@ -1,10 +1,11 @@
 import asyncio
 import edge_tts
-from flask import Flask, Response, jsonify, request, send_file
+from flask import Flask, Response, jsonify, request, send_file, send_from_directory
 from flask_cors import CORS
+import os
 
 OUTPUT_FILE = "/tmp/test.mp3"
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 CORS(app, supports_credentials=True)
 
 # Update the voice mapping dictionary
@@ -50,7 +51,7 @@ def tts():
     data = request.get_json()
     text = data['text']
     # voice not required
-    voice = data.get('voice', 'zh-CN-YunxiNeural')
+    voice = data.get('voice', 'en-US-AvaMultilingualNeural')
     file_name = data.get('file_name', OUTPUT_FILE)
 
     communicate = edge_tts.Communicate(text, voice)
@@ -62,7 +63,7 @@ def tts():
 async def stream_audio_route():
     data = request.get_json()
     text = data['text']
-    voice = data.get('voice', 'zh-CN-YunxiNeural')
+    voice = data.get('voice', 'en-US-AvaMultilingualNeural')
 
     return Response((audio_generator(text, voice)), content_type='application/octet-stream')
 
@@ -76,21 +77,32 @@ async def voices():
         return make_response(500, str(e))
 
 
+async def is_valid_edge_voice(voice_name):
+    voices = await edge_tts.list_voices()
+    return any(voice["ShortName"] == voice_name for voice in voices)
+
+
 @app.route('/v1/audio/speech', methods=['POST'])
 async def openai_compatible_tts():
     try:
         data = request.get_json()
-        
+
         # Validate required fields
         if 'input' not in data:
             return make_response(400, 'Missing required field: input')
-        
+
         text = data['input']
         openai_voice = data.get('voice', 'alloy')
-        
-        # Map OpenAI voice to Edge TTS voice
-        edge_voice = OPENAI_TO_EDGE_VOICE_MAP.get(openai_voice, 'en-US-AvaMultilingualNeural')
-        
+
+        # First try to map OpenAI voice name, if not found use the provided name directly
+        edge_voice = OPENAI_TO_EDGE_VOICE_MAP.get(openai_voice)
+        if not edge_voice:
+            # If it's not an OpenAI voice name, use it directly but validate it first
+            if await is_valid_edge_voice(openai_voice):
+                edge_voice = openai_voice
+            else:
+                return make_response(400, f'Invalid voice name: {openai_voice}. Use /voices endpoint to get list of valid voices.')
+
         # Return streaming response
         return Response(
             audio_generator(text, edge_voice),
@@ -103,6 +115,10 @@ async def openai_compatible_tts():
         return make_response(500, str(e))
 
 
-if __name__ == "__main__":
+@app.route('/')
+def home():
+    return send_from_directory(app.static_folder, 'index.html')
 
-    app.run()
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000)
